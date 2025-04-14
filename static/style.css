@@ -1,0 +1,301 @@
+:root {
+    --primary-color: #2196F3;
+    --secondary-color: #1976D2;
+    --background-color: #f8f9fa;
+    --text-color: #333;
+    --border-color: #e0e0e0;
+    --success-color: #4CAF50;
+    --error-color: #f44336;
+    --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Noto Sans SC', sans-serif;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    line-height: 1.6;
+}
+
+.app-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.header h1 {
+    font-size: 2.5rem;
+    color: var(--primary-color);
+    margin-bottom: 0.5rem;
+}
+
+.subtitle {
+    color: #666;
+    font-size: 1.1rem;
+}
+
+.main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.input-section {
+    background: white;
+    border-radius: 12px;
+    padding: 2rem;
+    box-shadow: var(--shadow);
+}
+
+.input-container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.input-label {
+    display: block;
+    margin-bottom: 1rem;
+    font-weight: 500;
+    color: var(--text-color);
+}
+
+.question-input {
+    width: 100%;
+    min-height: 150px;
+    padding: 1rem;
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 1rem;
+    resize: vertical;
+    transition: border-color 0.3s;
+}
+
+.question-input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+}
+
+.predict-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    background: var(--primary-color);
+    color: white;
+    padding: 1rem 2rem;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    margin-top: 1rem;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.predict-button:hover {
+    background: var(--secondary-color);
+    transform: translateY(-2px);
+}
+
+.button-icon {
+    font-size: 1.2rem;
+}
+
+.result-section {
+    background: white;
+    border-radius: 12px;
+    padding: 2rem;
+    box-shadow: var(--shadow);
+}
+
+.result-container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.result-title {
+    color: var(--primary-color);
+    margin-bottom: 1.5rem;
+    font-size: 1.5rem;
+}
+
+.result-content {
+    min-height: 100px;
+    padding: 1.5rem;
+    border-radius: 8px;
+    background: var(--background-color);
+}
+
+.placeholder-text {
+    color: #666;
+    text-align: center;
+}
+
+.loading {
+    text-align: center;
+    color: var(--primary-color);
+    font-weight: 500;
+}
+
+.success-message {
+    color: var(--text-color);
+    white-space: pre-wrap;
+    line-height: 1.8;
+}
+
+.error-message {
+    color: var(--error-color);
+    text-align: center;
+    font-weight: 500;
+}
+
+.footer {
+    text-align: center;
+    margin-top: 3rem;
+    padding: 1rem;
+    color: #666;
+}
+
+/* 新增样式：分析结果模块 */
+.analysis-section {
+    margin-bottom: 1.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.analysis-section:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.section-title {
+    color: var(--primary-color);
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+}
+
+.section-content {
+    margin-left: 1rem;
+}
+
+.subject-tag {
+    display: inline-block;
+    background-color: var(--primary-color);
+    color: white;
+    padding: 0.3rem 0.8rem;
+    border-radius: 16px;
+    font-size: 0.9rem;
+    margin-right: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.knowledge-tag {
+    display: inline-block;
+    background-color: #e3f2fd;
+    color: var(--secondary-color);
+    padding: 0.3rem 0.8rem;
+    border-radius: 16px;
+    font-size: 0.9rem;
+    margin-right: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.difficulty-tag {
+    display: inline-block;
+    padding: 0.3rem 0.8rem;
+    border-radius: 16px;
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+}
+
+.difficulty-easy {
+    background-color: #e8f5e9;
+    color: #388e3c;
+}
+
+.difficulty-medium {
+    background-color: #fff3e0;
+    color: #f57c00;
+}
+
+.difficulty-hard {
+    background-color: #ffebee;
+    color: #d32f2f;
+}
+
+.learning-path-item, .recommendation-item {
+    margin-bottom: 0.5rem;
+    padding-left: 1rem;
+    position: relative;
+}
+
+.learning-path-item:before, .recommendation-item:before {
+    content: "•";
+    position: absolute;
+    left: 0;
+    color: var(--primary-color);
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+    .app-container {
+        padding: 1rem;
+    }
+
+    .header h1 {
+        font-size: 2rem;
+    }
+
+    .input-section,
+    .result-section {
+        padding: 1.5rem;
+    }
+
+    .subject-tag, .knowledge-tag, .difficulty-tag {
+        font-size: 0.8rem;
+        padding: 0.2rem 0.6rem;
+    }
+}
+
+/* 模型选择按钮组样式 */
+.model-selection {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.model-button {
+    padding: 0.5rem 1.5rem;
+    border: 2px solid var(--primary-color);
+    border-radius: 6px;
+    background: transparent;
+    color: var(--primary-color);
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.model-button:hover {
+    background: #e3f2fd;
+}
+
+.model-button.active {
+    background: var(--primary-color);
+    color: white;
+} 
