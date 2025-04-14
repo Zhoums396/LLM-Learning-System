@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>智能学习系统 - 学科问题智能分析</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="app-container">
+        <header class="header">
+            <h1>智能学习系统</h1>
+            <p class="subtitle">基于大模型的学科问题分析与个性化学习推荐</p>
+        </header>
+
+        <main class="main-content">
+            <div class="input-section">
+                <div class="input-container">
+                    <label for="question" class="input-label">请输入学科问题内容</label>
+                    <textarea id="question" class="question-input" placeholder="例如：以下哪种说法是正确的？选项A原子是由质子和中子组成的B电磁波不能在真空中传播C导体的电阻是导体本身的固有属性D铜线铅笔芯和玻璃都是导体"></textarea>
+                    
+                    <!-- 添加模型选择按钮组 -->
+                    <div class="model-selection">
+                        <button id="pretrained-model" class="model-button">使用预训练模型</button>
+                        <button id="large-model" class="model-button active">使用大模型</button>
+                    </div>
+                    
+                    <button class="predict-button" onclick="predict()">
+                        <span class="button-text">开始分析</span>
+                        <span class="button-icon">→</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="result-section">
+                <div class="result-container">
+                    <h2 class="result-title">分析结果</h2>
+                    <div id="result" class="result-content">
+                        <div class="placeholder-text">
+                            <p>输入题目后点击"开始分析"按钮</p>
+                            <p>系统将自动分析题目的学科、知识点和难度</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <p>© 2024 智能学习助手</p>
+        </footer>
+    </div>
+
+    <script>
+        // 模型选择状态
+        let currentModel = 'large-model';
+        
+        // 添加模型选择按钮的事件监听
+        document.getElementById('pretrained-model').addEventListener('click', function() {
+            document.getElementById('large-model').classList.remove('active');
+            this.classList.add('active');
+            currentModel = 'pretrained-model';
+        });
+        
+        document.getElementById('large-model').addEventListener('click', function() {
+            document.getElementById('pretrained-model').classList.remove('active');
+            this.classList.add('active');
+            currentModel = 'large-model';
+        });
+        
+        function predict() {
+            const question = document.getElementById('question').value;
+            const resultDiv = document.getElementById('result');
+            
+            if (!question.trim()) {
+                resultDiv.innerHTML = '<div class="error-message">请输入题目内容</div>';
+                return;
+            }
+            
+            // 如果选择的是预训练模型，则不执行任何操作
+            if (currentModel === 'pretrained-model') {
+                resultDiv.innerHTML = '<div class="placeholder-text"><p>预训练模型功能暂未实现</p></div>';
+                return;
+            }
+            
+            // 使用大模型进行分析
+            resultDiv.innerHTML = '<div class="loading">分析中...</div>';
+            
+            fetch('/predict', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: 'question=' + encodeURIComponent(question)
+            })
+            .then(response => response.json())
+            .then(data => {
+                formatAndDisplayResult(data.result, resultDiv);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                resultDiv.innerHTML = '<div class="error-message">分析出错，请重试</div>';
+            });
+        }
+
+        function formatAndDisplayResult(result, container) {
+            // 使用正则表达式提取各个部分
+            const subjectMatch = result.match(/学科[:：]\s*([\s\S]*?)(?=知识点|$)/i);
+            const knowledgeMatch = result.match(/知识点[类型]*[:：]\s*([\s\S]*?)(?=难度级别|$)/i);
+            const difficultyMatch = result.match(/难度级别[:：]\s*([\s\S]*?)(?=$)/i);
+
+            let html = '';
+
+            // 学科部分
+            if (subjectMatch && subjectMatch[1]) {
+                const subject = subjectMatch[1].trim();
+                html += `
+                <div class="analysis-section">
+                    <div class="section-title">学科</div>
+                    <div class="section-content">
+                        <span class="subject-tag">${subject}</span>
+                    </div>
+                </div>`;
+            }
+
+            // 知识点部分
+            if (knowledgeMatch && knowledgeMatch[1]) {
+                let knowledge = knowledgeMatch[1].trim();
+                // 尝试解析为JSON数组
+                try {
+                    // 先尝试直接解析
+                    let knowledgeArr;
+                    try {
+                        knowledgeArr = JSON.parse(knowledge.replace(/'/g, '"'));
+                    } catch (e) {
+                        // 如果失败，尝试从字符串中提取数组部分
+                        const arrMatch = knowledge.match(/\[(.*)\]/);
+                        if (arrMatch && arrMatch[1]) {
+                            knowledgeArr = JSON.parse('[' + arrMatch[1].replace(/'/g, '"') + ']');
+                        } else {
+                            throw e;
+                        }
+                    }
+                    
+                    if (Array.isArray(knowledgeArr)) {
+                        const knowledgeTags = knowledgeArr.map(k => `<span class="knowledge-tag">${k}</span>`).join(' ');
+                        html += `
+                        <div class="analysis-section">
+                            <div class="section-title">知识点</div>
+                            <div class="section-content">
+                                ${knowledgeTags}
+                            </div>
+                        </div>`;
+                    } else {
+                        throw new Error('Not an array');
+                    }
+                } catch (e) {
+                    console.error('Error parsing knowledge:', e);
+                    // 如果不是JSON格式，尝试拆分逗号分隔的列表
+                    if (knowledge.includes(',') || knowledge.includes('，')) {
+                        const knowledgeItems = knowledge.split(/[,，]/).map(item => item.trim()).filter(Boolean);
+                        const knowledgeTags = knowledgeItems.map(k => `<span class="knowledge-tag">${k}</span>`).join(' ');
+                        html += `
+                        <div class="analysis-section">
+                            <div class="section-title">知识点</div>
+                            <div class="section-content">
+                                ${knowledgeTags}
+                            </div>
+                        </div>`;
+                    } else {
+                        // 直接展示文本
+                        html += `
+                        <div class="analysis-section">
+                            <div class="section-title">知识点</div>
+                            <div class="section-content">
+                                <span class="knowledge-tag">${knowledge}</span>
+                            </div>
+                        </div>`;
+                    }
+                }
+            }
+
+            // 难度部分
+            if (difficultyMatch && difficultyMatch[1]) {
+                const difficulty = difficultyMatch[1].trim();
+                let difficultyClass = 'difficulty-medium';
+                
+                if (['容易', '较易'].includes(difficulty)) {
+                    difficultyClass = 'difficulty-easy';
+                } else if (['较难', '困难'].includes(difficulty)) {
+                    difficultyClass = 'difficulty-hard';
+                }
+                
+                html += `
+                <div class="analysis-section">
+                    <div class="section-title">难度</div>
+                    <div class="section-content">
+                        <span class="difficulty-tag ${difficultyClass}">${difficulty}</span>
+                    </div>
+                </div>`;
+            }
+
+            // 如果没有成功解析，则显示原始结果
+            if (!html) {
+                html = `<div class="success-message">${result}</div>`;
+            }
+
+            container.innerHTML = html;
+        }
+    </script>
+</body>
+</html>
