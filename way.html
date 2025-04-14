@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>技术路线图</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 10px;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 10px;
+        }
+        
+        .section {
+            border: 2px dashed #ccc;
+            padding: 15px 100px 15px 15px;
+            margin: 10px 0;
+            border-radius: 6px;
+            position: relative;
+            min-height: 100px;
+        }
+        
+        .phase-title {
+            position: absolute;
+            right: -15px;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: #4a90e2;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 4px;
+            font-weight: bold;
+            width: 100px;
+            text-align: center;
+            font-size: 14px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .box-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-right: 15px;
+        }
+        
+        .box {
+            background: white;
+            border: 2px solid #4a90e2;
+            padding: 10px 20px;
+            border-radius: 4px;
+            text-align: center;
+            min-width: 150px;
+            position: relative;
+            font-size: 14px;
+        }
+        
+        .arrow {
+            color: #4a90e2;
+            font-size: 20px;
+            margin: 0 5px;
+        }
+        
+        .vertical-arrow {
+            text-align: center;
+            color: #4a90e2;
+            font-size: 20px;
+            margin: 5px 0;
+        }
+        
+        .description {
+            font-size: 13px;
+            color: #666;
+            margin-top: 12px;
+            text-align: center;
+            line-height: 1.4;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="section">
+            <div class="phase-title">数据准备阶段</div>
+            <div class="box-container">
+                <div class="box">数据采集</div>
+                <div class="arrow">→</div>
+                <div class="box">数据预处理</div>
+                <div class="arrow">→</div>
+                <div class="box">特征提取</div>
+            </div>
+            <div class="description">首先收集来自多个教育平台的学科试题数据，包括题目内容、答案、以及相关标签信息，确保数据集的多样性和代表性。</div>
+        </div>
+        
+        <div class="vertical-arrow">↓</div>
+        
+        <div class="section">
+            <div class="phase-title">模型训练阶段</div>
+            <div class="box-container">
+                <div class="box">选择大模型（如GPT-4）</div>
+                <div class="arrow">→</div>
+                <div class="box">模型训练与微调</div>
+            </div>
+            <div class="description">采用GPT-4等大型预训练语言模型，通过微调技术对模型进行定制化训练，适应学科知识点和难度评估的任务。</div>
+        </div>
+        
+        <div class="vertical-arrow">↓</div>
+        
+        <div class="section">
+            <div class="phase-title">分析评估阶段</div>
+            <div class="box-container">
+                <div class="box">知识点预测</div>
+                <div class="arrow">→</div>
+                <div class="box">难度评估</div>
+            </div>
+            <div class="description">基于训练好的大模型，对学科试题进行知识点预测和难度等级评估，为个性化学习推荐提供支持。</div>
+        </div>
+        
+        <div class="vertical-arrow">↓</div>
+        
+        <div class="section">
+            <div class="phase-title">系统实现阶段</div>
+            <div class="box-container">
+                <div class="box">系统开发（前端与后端）</div>
+                <div class="arrow">→</div>
+                <div class="box">集成与部署</div>
+            </div>
+            <div class="description">开发基于微服务架构的智能学习平台，前端界面采用现代化设计，后端集成大模型进行题目分析和个性化推荐。</div>
+        </div>
+        
+        <div class="vertical-arrow">↓</div>
+        
+        <div class="section">
+            <div class="phase-title">优化迭代阶段</div>
+            <div class="box-container">
+                <div class="box">实验设计与测试</div>
+                <div class="arrow">→</div>
+                <div class="box">模型优化与反馈</div>
+            </div>
+            <div class="description">在平台中进行实时实验，收集用户反馈，不断优化模型的预测精度和用户体验，提升系统的稳定性与实用性。</div>
+        </div>
+    </div>
+</body>
+</html>

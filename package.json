@@ -1,0 +1,14 @@
+{
+  "name": "subject-analyzer",
+  "version": "1.0.0",
+  "description": "基于大模型的学科问题智能分析工具",
+  "main": "app.py",
+  "scripts": {
+    "dev": "bash start.sh",
+    "start": "python app.py"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {}
+} 
